@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>Change the below info!</h2>
+
+<!--<form th:action="@{/saveEmp}" th:object="${employee}"-->
+<!--      method="POST">-->
+<!--    &lt;!&ndash; Add hidden form field to handle update &ndash;&gt;-->
+<!--    <input type="hidden" th:field="*{id}" />-->
+
+<!--    <input type="text" th:field="*{firstName}" placeholder="Employee First Name">-->
+<!--    <input type="text" th:field="*{lastName}" placeholder="Employee Last Name">-->
+<!--    <input type="text" th:field="*{email}" placeholder="Employee Mail">-->
+<!--&lt;!&ndash;    <input type="text" th:field="@{${'/display?id=' + employee.id}}" placeholder="Employee Mail">&ndash;&gt;-->
+
+
+<!--    <input type="file" accept="image/*" class="form-control" id="image" name="image" aria-describedby="inputGroupFileAddon04" aria-label="Upload" required="required">-->
+
+
+
+<!--    <button type="submit" class="btn btn-info col-2"> Save Employee</button>-->
+<!--</form>-->
+
+<form enctype="multipart/form-data" th:action="@{/saveEmp}" th:object="${employee}"
+      method="POST">
+
+    <input type="hidden" th:field="*{id}" />-->
+
+    <input type="text" th:field="*{firstName}" placeholder="Employee First Name">
+    <input type="text" th:field="*{lastName}" placeholder="Employee Last Name">
+    <input type="text" th:field="*{email}" placeholder="Employee Mail">
+    <!--        <input type="file" name="avatarFile" accept="image/*"> &lt;!&ndash; Add file input field for uploading the image &ndash;&gt;-->
+    <input type="file" accept="image/*" class="form-control" id="image" name="image" aria-describedby="inputGroupFileAddon04" aria-label="Upload" required="required">
+
+    <button type="submit" class="btn btn-info col-2"> Save Employee</button>
+
+</form>
+
+</body>
+</html>

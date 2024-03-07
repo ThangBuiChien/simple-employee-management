@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Management System</title>
+</head>
+<body>
+<table border="1">
+    <thead>
+    <a th:href="@{/showEmpForm}"> Add new Emp</a>
+    <tr>
+        <td>FIRST NAME</td>
+        <td>LAST NAME</td>
+        <td>GMAIL</td>
+        <td>AVATAR</td>
+    </tr>
+
+    </thead>
+    <tbody>
+    <tr th:each="employee: ${listEmployees}">
+        <td th:text="${employee.firstName}"></td>
+        <td th:text="${employee.lastName}"></td>
+        <td th:text="${employee.email}"></td>
+<!--        <td th:text="${employee.avatar}"></td>-->
+<!--        <td>-->
+<!--            <img th:src="'data:image/jpeg;base64,' + ${#strings.toString(employee.avatar)}" alt="Avatar" width="100" height="100">-->
+<!--        </td>-->
+
+        <td><img height="250px"  th:src="@{${'/display?id=' + employee.id}}" alt=""></td>
+
+
+        <td>
+            <a th:href="@{/showUpdateEmpForm/{id}(id = ${employee.id})}">Update</a>
+            <a th:href="@{/deleteEmp/{id}(id = ${employee.id})}">Delete</a>
+
+        </td>
+
+
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title>Add new employee here</title>
+
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+</head>
+<body>
+
+
+    <h2>Input here!!</h2>
+
+    <form enctype="multipart/form-data" th:action="@{/saveEmp}" th:object="${employee}"
+          method="POST">
+
+        <input type="text" th:field="*{firstName}" placeholder="Employee First Name">
+        <input type="text" th:field="*{lastName}" placeholder="Employee Last Name">
+        <input type="text" th:field="*{email}" placeholder="Employee Mail">
+<!--        <input type="file" name="avatarFile" accept="image/*"> &lt;!&ndash; Add file input field for uploading the image &ndash;&gt;-->
+        <input type="file" accept="image/*" class="form-control" id="image" name="image" aria-describedby="inputGroupFileAddon04" aria-label="Upload" required="required">
+
+        <button type="submit" class="btn btn-info col-2"> Save Employee</button>
+
+    </form>
+
+
+
+
+</body>
+</html>
