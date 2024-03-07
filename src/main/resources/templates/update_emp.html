@@ -35,7 +35,7 @@
     <input type="text" th:field="*{firstName}" placeholder="Employee First Name" class="form-control mb 2 col-4 ">
     <input type="text" th:field="*{lastName}" placeholder="Employee Last Name" class="form-control mb 2 col-4">
     <input type="text" th:field="*{email}" placeholder="Employee Mail" class="form-control mb 2 col-4">
-    <img height="250px" th:src="@{${'/display?id=' + employee.id}}" alt="" >
+    <img height="75px" th:src="@{${'/display?id=' + employee.id}}" alt="" >
     <!--        <input type="file" name="avatarFile" accept="image/*"> &lt;!&ndash; Add file input field for uploading the image &ndash;&gt;-->
     <label for="image">Change your avatar </label>
     <input type="file" accept="image/*" class="form-control" id="image" name="image"
