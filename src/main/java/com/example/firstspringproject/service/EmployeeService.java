@@ -11,7 +11,7 @@ import java.util.*;
 public interface EmployeeService {
 
 
-    List<Employee> getAllEmployee();
+    List<Employee> getAllEmployee(String keyword);
 
     void saveEmp(Employee emp);
 
@@ -19,7 +19,9 @@ public interface EmployeeService {
 
     void deleteEmp(long id);
 
-    Page<Employee> findAll(Pageable pageable);
+    Page<Employee> findAll(Pageable pageable, String keyword);
+
+
 
 
 

@@ -16,9 +16,21 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Autowired
     private EmployeeRepository employeeRepository;
     @Override
-    public List<Employee> getAllEmployee() {
+    public List<Employee> getAllEmployee(String keyword) {
+        if (keyword != null) {
+            return employeeRepository.search(keyword);
+        }
         return employeeRepository.findAll();
     }
+
+    @Override
+    public Page<Employee> findAll(Pageable pageable, String keyword) {
+        if (keyword != null) {
+            return employeeRepository.searchPageable(pageable, keyword);
+        }
+        return employeeRepository.findAll(pageable);
+    }
+
 
     @Override
     public void saveEmp(Employee emp) {
@@ -37,10 +49,9 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employee;
     }
 
-    @Override
-    public Page<Employee> findAll(Pageable pageable) {
-        return employeeRepository.findAll(pageable);
-    }
+
+
+
 
     @Override
     public void deleteEmp(long id) {

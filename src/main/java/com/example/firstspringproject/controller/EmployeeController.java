@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -42,7 +43,8 @@ public class EmployeeController {
     public String getEmp(Model model,
             @RequestParam(defaultValue = "-1") int page,
             @RequestParam(defaultValue = "-1") int size,
-            @RequestParam(defaultValue = "-1") String sortBy) {
+            @RequestParam(defaultValue = "-1") String sortBy,
+                         @RequestParam(name = "keyword", required = false) String keyword         ) {
 
         if(page == -1){
             page = (int)httpSession.getAttribute("page");
@@ -63,12 +65,14 @@ public class EmployeeController {
             httpSession.setAttribute("sortBy", sortBy);
 
         }
+    //    String keyword = (String) model.getAttribute("keyword");
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        Page<Employee> emp = employeeService.findAll(pageable);
-        model.addAttribute("listEmployees" ,employeeService.findAll(pageable) );
+        Page<Employee> emp = employeeService.findAll(pageable, keyword);
+        model.addAttribute("listEmployees" ,employeeService.findAll(pageable, keyword) );
         int totalPages = emp.getTotalPages();
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("currentPage", page);
+        model.addAttribute("keyword", keyword);
 
        // httpSession.setAttribute("size", size);
       //  model.addAttribute("size", size);
@@ -84,16 +88,24 @@ public class EmployeeController {
 
 
     @GetMapping("/")
-    public String viewHomePage(Model model){
+    public String viewHomePage(Model model, @Param("keyword") String keyword){
         //set session object
         int page=0;
         int size = 3;
         String sortBy = "id";
-        httpSession.setAttribute("pageSize", size);
+        httpSession.setAttribute("size", size);
         httpSession.setAttribute("page", page);
         httpSession.setAttribute("sortBy", "id");
 
+        if(keyword!=null) {
+            model.addAttribute("keyword", keyword);
+            return "redirect:/sorting?keyword=" + keyword;
+        }
+
+
         return "redirect:/sorting";
+
+
     }
 
     @GetMapping("/showEmpForm")
