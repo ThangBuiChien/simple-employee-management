@@ -1,9 +1,14 @@
 package com.example.firstspringproject.controller;
 
 import com.example.firstspringproject.model.Employee;
+import com.example.firstspringproject.repository.EmployeeRepository;
 import com.example.firstspringproject.service.EmployeeService;
 import com.example.firstspringproject.service.EmployeeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,7 +25,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
-
+import java.util.List;
 
 
 @Controller
@@ -28,9 +33,40 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
+    @GetMapping("/sorting")
+    public String getEmp(Model model,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size,
+            @RequestParam(defaultValue = "id") String sortBy) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        Page<Employee> emp = employeeService.findAll(pageable);
+        model.addAttribute("listEmployees" ,employeeService.findAll(pageable) );
+        int totalPages = emp.getTotalPages();
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", page);
+
+        return "index";
+    }
+
+
     @GetMapping("/")
     public String viewHomePage(Model model){
-        model.addAttribute("listEmployees" ,employeeService.getAllEmployee() );
+        int currentPage = 0; // Default to the first page
+        int pageSize = 3; // Page size
+        String sortBy = "id"; // Sort by ID
+
+
+        //model.addAttribute("listEmployees" ,employeeService.getAllEmployee() );
+        Pageable pageable = PageRequest.of(currentPage, pageSize, Sort.by(sortBy));
+        Page<Employee> emp = employeeService.findAll(pageable);
+        int totalPages = emp.getTotalPages();
+
+        model.addAttribute("listEmployees" ,employeeService.findAll(pageable) );
+
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", currentPage);
+
         return "index";
     }
 
