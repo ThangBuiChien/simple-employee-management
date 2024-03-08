@@ -4,6 +4,7 @@ import com.example.firstspringproject.model.Employee;
 import com.example.firstspringproject.repository.EmployeeRepository;
 import com.example.firstspringproject.service.EmployeeService;
 import com.example.firstspringproject.service.EmployeeServiceImpl;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,16 +30,39 @@ import java.util.List;
 
 
 @Controller
+@SessionAttributes("pageSize")
 public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private HttpSession httpSession;
+
 
     @GetMapping("/sorting")
     public String getEmp(Model model,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "3") int size,
-            @RequestParam(defaultValue = "id") String sortBy) {
+            @RequestParam(defaultValue = "-1") int page,
+            @RequestParam(defaultValue = "-1") int size,
+            @RequestParam(defaultValue = "-1") String sortBy) {
 
+        if(page == -1){
+            page = (int)httpSession.getAttribute("page");
+        }
+        else{
+            httpSession.setAttribute("page", page);
+
+        }if(size == -1){
+            size = (int)httpSession.getAttribute("size");
+        }
+        else{
+            httpSession.setAttribute("size", size);
+
+        }if(sortBy.equals("-1")){
+            sortBy = (String)httpSession.getAttribute("sortBy");
+        }
+        else{
+            httpSession.setAttribute("sortBy", sortBy);
+
+        }
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         Page<Employee> emp = employeeService.findAll(pageable);
         model.addAttribute("listEmployees" ,employeeService.findAll(pageable) );
@@ -46,28 +70,30 @@ public class EmployeeController {
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("currentPage", page);
 
+       // httpSession.setAttribute("size", size);
+      //  model.addAttribute("size", size);
+
+
+
+
+        //httpSession.setAttribute("pageSize", size);
+
+
         return "index";
     }
 
 
     @GetMapping("/")
     public String viewHomePage(Model model){
-        int currentPage = 0; // Default to the first page
-        int pageSize = 3; // Page size
-        String sortBy = "id"; // Sort by ID
+        //set session object
+        int page=0;
+        int size = 3;
+        String sortBy = "id";
+        httpSession.setAttribute("pageSize", size);
+        httpSession.setAttribute("page", page);
+        httpSession.setAttribute("sortBy", "id");
 
-
-        //model.addAttribute("listEmployees" ,employeeService.getAllEmployee() );
-        Pageable pageable = PageRequest.of(currentPage, pageSize, Sort.by(sortBy));
-        Page<Employee> emp = employeeService.findAll(pageable);
-        int totalPages = emp.getTotalPages();
-
-        model.addAttribute("listEmployees" ,employeeService.findAll(pageable) );
-
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("currentPage", currentPage);
-
-        return "index";
+        return "redirect:/sorting";
     }
 
     @GetMapping("/showEmpForm")
