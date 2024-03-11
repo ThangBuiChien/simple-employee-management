@@ -65,6 +65,9 @@ public class EmployeeController {
             httpSession.setAttribute("sortBy", sortBy);
 
         }
+        if(keyword==null && httpSession.getAttribute("keyword")!=null){
+            keyword = (String)httpSession.getAttribute("keyword");
+        }
     //    String keyword = (String) model.getAttribute("keyword");
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         Page<Employee> emp = employeeService.findAll(pageable, keyword);
@@ -74,7 +77,12 @@ public class EmployeeController {
         model.addAttribute("currentPage", page);
         model.addAttribute("keyword", keyword);
 
-       // httpSession.setAttribute("size", size);
+        httpSession.setAttribute("totalPages", totalPages);
+        httpSession.setAttribute("currentPage", page);
+        httpSession.setAttribute("keyword", keyword);
+
+
+        // httpSession.setAttribute("size", size);
       //  model.addAttribute("size", size);
 
 
@@ -99,12 +107,21 @@ public class EmployeeController {
 
         if(keyword!=null) {
             model.addAttribute("keyword", keyword);
+            httpSession.setAttribute("keyword", keyword);
+
             return "redirect:/sorting?keyword=" + keyword;
         }
 
 
         return "redirect:/sorting";
 
+
+    }
+
+    @PostMapping("/clearKeyword")
+    public String clearKeyword(HttpSession session) {
+        session.setAttribute("keyword", null);
+        return "redirect:/sorting";
 
     }
 
@@ -129,9 +146,9 @@ public class EmployeeController {
 
         //handle picture
         byte[] bytes = file.getBytes();
-        Blob blob = new javax.sql.rowset.serial.SerialBlob(bytes);
+        Blob avatar = new javax.sql.rowset.serial.SerialBlob(bytes);
 
-        emp.setAvatar(blob);
+        emp.setAvatar(avatar);
 
         // Redirect to the home page or any other appropriate view
         employeeService.saveEmp(emp);

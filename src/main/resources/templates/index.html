@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="5">
     <title>Employee Management System</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -10,6 +10,7 @@
 
 </head>
 <body>
+<h2>EMPLOYEE MANAGEMENT</h2>
 <a th:href="@{/showEmpForm}" class="btn btn-primary"> Add new Emp</a>
 
 <!--<form th:action="/sorting">-->
@@ -42,19 +43,21 @@
     }
 </script>
 
+<div style="display: inline;">
+
 <form th:action="@{/}">
-    Filter: <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" required />
-    &nbsp;
+    Filter: <input type="text" name="keyword" id="keyword" size="50" th:value="${session.keyword}"  />&nbsp;
     <input type="submit" value="Search" />
-    &nbsp;
-    <input type="button" value="Clear" id="btnClear" onclick="clearSearch()" />
 </form>
 
-<script type="text/javascript">
-    function clearSearch() {
-        window.location = "[[@{/}]]";
-    }
-</script>
+<form th:action="@{/clearKeyword}" method = "POST">
+    <input type="submit" value="Clear"  />
+</form>
+
+</div>
+
+
+
 
 
 
