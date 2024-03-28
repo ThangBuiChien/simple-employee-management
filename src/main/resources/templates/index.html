@@ -28,13 +28,16 @@
 <form id="paginationForm" th:action="@{/sorting}" method="get">
     <label for="entries">Choose a page size:</label>
     <select th:name="size" id="entries" onchange="submitForm()">
-        <option value="3" th:selected="${session.size == 3}">3</option>
-        <option value="5" th:selected="${session.size == 5}">5</option>
-        <option value="10" th:selected="${session.size == 10}">10</option>
-        <option value="20" th:selected="${session.size == 20}">20</option>
+        <option value="3" th:selected="${size == 3}">3</option>
+        <option value="5" th:selected="${size == 5}">5</option>
+        <option value="10" th:selected="${size == 10}">10</option>
+        <option value="20" th:selected="${size == 20}">20</option>
     </select>
     <br><br>
     <input type="hidden" th:name="page" th:value="${currentPage}">
+    <input type="hidden" th:name="keyword" th:value="${keyword}">
+
+
 </form>
 
 <script>
@@ -45,14 +48,21 @@
 
 <div style="display: inline;">
 
-<form th:action="@{/}">
-    Filter: <input type="text" name="keyword" id="keyword" size="50" th:value="${session.keyword}"  />&nbsp;
+<form th:action="@{/sorting}">
+    Filter: <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}"  />&nbsp;
+    <input type="hidden" th:name="page" th:value="${currentPage}">
+    <input type="hidden" th:name="size" th:value="${size}">
+
     <input type="submit" value="Search" />
 </form>
 
-<form th:action="@{/clearKeyword}" method = "POST">
-    <input type="submit" value="Clear"  />
-</form>
+<!--<form th:action="@{/clearKeyword}" method = "POST">-->
+<!--    <input type="submit" value="Clear"  />-->
+<!--</form>-->
+
+    <form th:action="@{/}" method = "GET">
+        <input type="submit" value="Clear All Filter"  />
+    </form>
 
 </div>
 
