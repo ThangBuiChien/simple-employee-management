@@ -35,6 +35,46 @@
                    required="required" placeholder="Upload your avatar">
         </div>
 
+<!--        only update pdf file-->
+        <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file">Upload your CV</label>
+                <input type="file" class="form-control" id="file" name="file" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <div id="errorMessage" style="color: red; display: none;">Please upload a PDF file.</div>
+
+        <script>
+            document.getElementById('uploadForm').addEventListener('submit', function(event) {
+                var fileInput = document.getElementById('file');
+                var filePath = fileInput.value;
+                var allowedExtensions = /(\.pdf)$/i;
+                if (!allowedExtensions.test(filePath)) {
+                    event.preventDefault();
+                    document.getElementById('errorMessage').style.display = 'block';
+                }
+            });
+        </script>
+
+
+
+        <!--        <div class="form-group" >-->
+<!--            <label for ="image">Upload your avatar</label>-->
+<!--            <input type="file"  accept="application/pdf" class="form-control" id="file" name="file"-->
+<!--                   aria-describedby="inputGroupFileAddon04" aria-label="Upload"-->
+<!--                   required="required" placeholder="Upload your CV, file">-->
+<!--        </div>-->
+
+<!--        <div>-->
+<!--            <form method="POST" enctype="multipart/form-data" action="/">-->
+<!--                <table>-->
+<!--                    <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>-->
+<!--                    <tr><td></td><td><input type="submit" value="Upload" /></td></tr>-->
+<!--                </table>-->
+<!--            </form>-->
+<!--        </div>-->
+
 
         <button type="submit" class="btn btn-success"> Save Employee</button>
 

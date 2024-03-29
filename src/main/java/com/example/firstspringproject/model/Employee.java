@@ -18,8 +18,8 @@ public class Employee {
     @Column(name = "email")
     private String email;
 
-
-
+    @Column(name = "cv_file_path")
+    private String CV;
 
     @Lob
     private Blob avatar; // Byte array to store the image data
@@ -62,5 +62,13 @@ public class Employee {
 
     public void setAvatar(Blob avatar) {
         this.avatar = avatar;
+    }
+
+    public String getCV() {
+        return CV;
+    }
+
+    public void setCV(String CV) {
+        this.CV = CV;
     }
 }

@@ -4,6 +4,7 @@ import com.example.firstspringproject.model.Employee;
 import com.example.firstspringproject.repository.EmployeeRepository;
 import com.example.firstspringproject.service.EmployeeService;
 import com.example.firstspringproject.service.EmployeeServiceImpl;
+import com.example.firstspringproject.storage.StorageService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -38,6 +39,15 @@ public class EmployeeController {
     private EmployeeService employeeService;
     @Autowired
     private HttpSession httpSession;
+
+    private final StorageService storageService;
+
+
+    @Autowired
+    public EmployeeController(StorageService storageService) {
+        this.storageService = storageService;
+    }
+
 
 
 //    @GetMapping("/sorting")
@@ -170,12 +180,17 @@ public class EmployeeController {
 
     @PostMapping("/saveEmp")
     public String saveEmp(@ModelAttribute("employee") Employee emp,
-                          @RequestParam("image") MultipartFile file)
+                          @RequestParam("image") MultipartFile image,
+                          @RequestParam("file") MultipartFile file)
             throws IOException, SerialException, SQLException {
 
         //handle picture
-        byte[] bytes = file.getBytes();
+        byte[] bytes = image.getBytes();
         Blob avatar = new javax.sql.rowset.serial.SerialBlob(bytes);
+
+        storageService.store(file);
+
+        emp.setCV(file.getOriginalFilename());
 
         emp.setAvatar(avatar);
 
@@ -183,6 +198,22 @@ public class EmployeeController {
         employeeService.saveEmp(emp);
         return "redirect:/";
     }
+
+//    @PostMapping("/saveEmp")
+//    public String saveEmp(@ModelAttribute("employee") Employee emp,
+//                          @RequestParam("image") MultipartFile file)
+//            throws IOException, SerialException, SQLException {
+//
+//        //handle picture
+//        byte[] bytes = file.getBytes();
+//        Blob avatar = new javax.sql.rowset.serial.SerialBlob(bytes);
+//
+//        emp.setAvatar(avatar);
+//
+//        // Redirect to the home page or any other appropriate view
+//        employeeService.saveEmp(emp);
+//        return "redirect:/";
+//    }
 
     @PostMapping("/saveEmployee")
     public String saveEmployee(@ModelAttribute("employee") Employee employee) {
